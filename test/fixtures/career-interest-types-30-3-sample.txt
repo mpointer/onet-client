@@ -1,0 +1,30 @@
+O*NET-SOC Code	Element ID	Element Name	Scale ID	Data Value	Date	Domain Source
+11-1011.00	1.B.1.a	Realistic	OI	1.26	02/2026	Machine Learning/Expert
+11-1011.00	1.B.1.b	Investigative	OI	3.05	02/2026	Machine Learning/Expert
+11-1011.00	1.B.1.c	Artistic	OI	2.16	02/2026	Machine Learning/Expert
+11-1011.00	1.B.1.d	Social	OI	3.54	02/2026	Machine Learning/Expert
+11-1011.00	1.B.1.e	Enterprising	OI	6.96	02/2026	Machine Learning/Expert
+11-1011.00	1.B.1.f	Conventional	OI	4.97	02/2026	Machine Learning/Expert
+11-1011.00	1.B.1.g	First Interest High-Point	IH	5.00	02/2026	Machine Learning/Expert
+11-1011.00	1.B.1.h	Second Interest High-Point	IH	6.00	02/2026	Machine Learning/Expert
+11-1011.00	1.B.1.i	Third Interest High-Point	IH	0.00	02/2026	Machine Learning/Expert
+11-1011.03	1.B.1.a	Realistic	OI	2.04	11/2023	Machine Learning
+11-1011.03	1.B.1.b	Investigative	OI	4.78	11/2023	Machine Learning
+11-1011.03	1.B.1.c	Artistic	OI	2.48	11/2023	Machine Learning
+11-1011.03	1.B.1.d	Social	OI	3.55	11/2023	Machine Learning
+11-1011.03	1.B.1.e	Enterprising	OI	6.68	11/2023	Machine Learning
+11-1011.03	1.B.1.f	Conventional	OI	4.49	11/2023	Machine Learning
+11-1011.03	1.B.1.g	First Interest High-Point	IH	5.00	11/2023	Machine Learning
+11-1011.03	1.B.1.h	Second Interest High-Point	IH	2.00	11/2023	Machine Learning
+11-1011.03	1.B.1.i	Third Interest High-Point	IH	6.00	11/2023	Machine Learning
+11-1021.00	1.B.1.a	Realistic	OI	2.20	02/2026	Machine Learning/Expert
+11-1021.00	1.B.1.b	Investigative	OI	2.37	02/2026	Machine Learning/Expert
+11-1021.00	1.B.1.c	Artistic	OI	1.29	02/2026	Machine Learning/Expert
+11-1021.00	1.B.1.d	Social	OI	3.38	02/2026	Machine Learning/Expert
+11-1021.00	1.B.1.e	Enterprising	OI	7.00	02/2026	Machine Learning/Expert
+11-1021.00	1.B.1.f	Conventional	OI	5.34	02/2026	Machine Learning/Expert
+11-1021.00	1.B.1.g	First Interest High-Point	IH	5.00	02/2026	Machine Learning/Expert
+11-1021.00	1.B.1.h	Second Interest High-Point	IH	6.00	02/2026	Machine Learning/Expert
+11-1021.00	1.B.1.i	Third Interest High-Point	IH	0.00	02/2026	Machine Learning/Expert
+11-1031.00	1.B.1.a	Realistic	OI	1.54	11/2023	Machine Learning
+11-1031.00	1.B.1.b	Investigative	OI	3.35	11/2023	Machine Learning
