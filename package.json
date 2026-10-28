@@ -1,6 +1,6 @@
 {
   "name": "onet-client",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Typed client for O*NET Web Services v2 (api-v2.onetcenter.org): occupation search and reports, details pagination, the Interest Profiler and Mini-IP, plus parsers for the O*NET bulk database files. Zero dependencies.",
   "license": "MIT",
   "author": "Michael Pointer <mpointer@gmail.com>",
