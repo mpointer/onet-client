@@ -49,7 +49,16 @@ describe('parseCareerInterestTypes', () => {
       'IM\t11-1011.00\t99\t1.B.1.c',
       'OI\t11-1011.00\t9\t2.C.1.a',
     ].join('\n');
-    expect(parseCareerInterestTypes(text).get('11-1011.00')).toEqual({ R: 5, I: 6, A: 0, S: 0, E: 0, C: 0 });
+    // Only R and I came through, so the code is left out rather than zero-filled
+    expect(parseCareerInterestTypes(text).has('11-1011.00')).toBe(false);
+    const full = [
+      text,
+      'OI\t11-1011.00\t1\t1.B.1.c',
+      'OI\t11-1011.00\t2\t1.B.1.d',
+      'OI\t11-1011.00\t3\t1.B.1.e',
+      'OI\t11-1011.00\t4\t1.B.1.f',
+    ].join('\n');
+    expect(parseCareerInterestTypes(full).get('11-1011.00')).toEqual({ R: 5, I: 6, A: 1, S: 2, E: 3, C: 4 });
   });
 
   it('CONTRACT: the real release 30.3 file sample still parses', () => {

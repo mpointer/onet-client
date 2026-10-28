@@ -37,7 +37,7 @@ export interface InterestProfilerAreaResult {
 }
 
 export interface InterestProfilerResult {
-  /** Scores keyed by area, from the `result` list. Present only when all six areas came back. */
+  /** Scores keyed by area, from the `result` list. The client throws rather than return a partial set. */
   scores: Record<RiasecArea, number>;
   result: InterestProfilerAreaResult[];
   /** Link to the Matching careers service for these scores, when the API includes it. */

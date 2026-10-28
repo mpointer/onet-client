@@ -18,7 +18,7 @@
  * returned. See https://services.onetcenter.org/terms and
  * https://services.onetcenter.org/help/license_data.
  */
-import { assertOnetCode } from './codes.js';
+import { assertOnetCode, assertResource } from './codes.js';
 import {
   answersToString,
   type InterestProfilerAnswerOption,
@@ -318,7 +318,12 @@ export class OnetClient {
       } catch { /* not JSON; keep the text */ }
       throw new OnetApiError(`O*NET ${response.status} on ${url}${detail}`, response.status, url, body);
     }
-    return (await response.json()) as T;
+    const text = await response.text();
+    try {
+      return JSON.parse(text) as T;
+    } catch {
+      throw new OnetApiError(`O*NET ${response.status} on ${url}: response was not JSON`, response.status, url, text);
+    }
   }
 
   /**
@@ -350,7 +355,7 @@ export class OnetClient {
   /** The top search hit for a title, or null when nothing matched. */
   async resolveCode(title: string): Promise<Career | null> {
     const page = await this.search(title, { end: 1 });
-    return page.career[0] ?? null;
+    return page.career?.[0] ?? null;
   }
 
   /** Outlook category, Bright Outlook categories and BLS salary figures (`/mnm/careers/{code}/job_outlook`). */
@@ -360,7 +365,7 @@ export class OnetClient {
 
   /** Any other My Next Move career report (`knowledge`, `skills`, `abilities`, `personality`, `technology`, `education`, `check_out_my_state`, `explore_more`), untyped. */
   async careerReport<T = unknown>(code: string, resource: string): Promise<T> {
-    return this.get<T>(`mnm/careers/${assertOnetCode(code)}/${encodeURIComponent(resource)}`);
+    return this.get<T>(`mnm/careers/${assertOnetCode(code)}/${assertResource(resource)}`);
   }
 
   // ---- O*NET OnLine -------------------------------------------------------
@@ -377,20 +382,27 @@ export class OnetClient {
 
   /** Any summary report, untyped (`/online/occupations/{code}/summary/{resource}`). */
   async summary<T = unknown>(code: string, resource: string): Promise<T> {
-    return this.get<T>(`online/occupations/${assertOnetCode(code)}/summary/${encodeURIComponent(resource)}`);
+    return this.get<T>(`online/occupations/${assertOnetCode(code)}/summary/${assertResource(resource)}`);
   }
 
   /**
    * A details report's elements (`/online/occupations/{code}/details/{resource}`),
-   * all pages collected unless `all: false`.
+   * all pages collected unless `all: false`. Throws if pagination stops
+   * before the report's `total` (a `next` link that was not followed), since
+   * a partial list would otherwise pass for the whole report.
    */
   async details(code: string, resource: DetailsResource | string, options: DetailsOptions = {}): Promise<DetailElement[]> {
-    const path = `online/occupations/${assertOnetCode(code)}/details/${encodeURIComponent(resource)}`;
+    const path = `online/occupations/${assertOnetCode(code)}/details/${assertResource(resource)}`;
     const query: Query = { sort: options.sort, start: options.start ?? 1, end: options.end ?? 500 };
     const elements: DetailElement[] = [];
+    let last: DetailsPage | undefined;
     for await (const page of this.pages<DetailsPage>(path, query)) {
       elements.push(...(page.element ?? []));
+      last = page;
       if (options.all === false) break;
+    }
+    if (options.all !== false && last && typeof last.end === 'number' && typeof last.total === 'number' && last.end < last.total) {
+      throw new OnetApiError(`Pagination for ${path} stopped at ${last.end} of ${last.total}`, 0, this.url(path, query), last);
     }
     return elements;
   }

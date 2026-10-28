@@ -208,12 +208,24 @@ describe('O*NET OnLine reports', () => {
     expect(calls).toHaveLength(1);
   });
 
-  it('does not follow a next link that leaves the configured base', async () => {
+  it('does not follow a next link that leaves the configured base, and throws rather than return a partial report', async () => {
     const page1 = { start: 1, end: 1, total: 2, next: 'https://evil.example/online/occupations/17-2051.00/details/skills?start=2', element: [{ id: 'a', name: 'A' }] };
     const { client: c, calls } = client({ '/online/occupations/17-2051.00/details/skills': () => json(page1) });
-    const skills = await c.skills('17-2051.00');
-    expect(skills).toHaveLength(1);
+    await expect(c.skills('17-2051.00')).rejects.toThrow(/stopped at 1 of 2/);
     expect(calls).toHaveLength(1);
+  });
+
+  it('rejects a resource name that is not a plain word, before any request', async () => {
+    const { client: c, calls } = client({});
+    await expect(c.summary('17-2051.00', '..')).rejects.toThrow(TypeError);
+    await expect(c.careerReport('17-2051.00', '.')).rejects.toThrow(TypeError);
+    await expect(c.details('17-2051.00', 'skills/../x')).rejects.toThrow(TypeError);
+    expect(calls).toHaveLength(0);
+  });
+
+  it('throws OnetApiError when a 200 body is not JSON', async () => {
+    const { client: c } = client({ '/online/occupations/17-2051.00/': () => new Response('<html>portal</html>', { status: 200 }) });
+    await expect(c.occupation('17-2051.00')).rejects.toBeInstanceOf(OnetApiError);
   });
 
   it('stops a self-referential next chain at maxPages instead of looping', async () => {
