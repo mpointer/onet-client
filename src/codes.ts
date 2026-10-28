@@ -57,3 +57,13 @@ export function socToOnetCode(soc: string): string {
 export function onetToSocCode(onetCode: string): string {
   return assertOnetCode(onetCode).slice(0, 7);
 }
+
+/**
+ * Validate a report resource name for use as a path segment. Resource names
+ * are lowercase words joined by underscores; `encodeURIComponent` leaves `.`
+ * and `..` alone, and the URL parser would resolve those as dot segments.
+ */
+export function assertResource(value: string): string {
+  if (!/^[a-z_]+$/.test(value)) throw new TypeError(`Not a report resource name: ${JSON.stringify(value)}`);
+  return value;
+}
